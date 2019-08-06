@@ -1,8 +1,8 @@
 <div class="view">
-    <input class="toggle" type="checkbox" (click)="toggleTodoComplete(todo)" [checked]="todo.complete">
-    <label>{{todo.title}}
-        <app-todo-timer class="float-right"></app-todo-timer>
-    </label>
-    <button class="destroy" (click)="removeTodo(todo)"></button>
-
+  <input class="toggle" type="checkbox" (click)="toggleTodoComplete(todo)" [checked]="todo.complete">
+  <label>{{todo.title}}
+    <button class='button' [ngClass]="{ 'paused' : stopedTimer}" (click)="onTogglePlayBtn()"></button>
+    <app-todo-timer class="float-right"></app-todo-timer>
+  </label>
+  <button class="destroy" (click)="removeTodo(todo)"></button>
 </div>
