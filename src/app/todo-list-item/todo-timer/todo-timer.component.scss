@@ -2,17 +2,19 @@ svg {
     display: block;
   }
   
-  .loader 
-  { fill: #0088cc }
+.loader {
+   fill: #0088cc;
+  }
   
-  .border 
-  { fill: #00517a }
+.border { 
+  fill: #00517a
+ }
 
-  .svg-container {
-      margin: 4px;
+.svg-container {
+      margin: 5px;
   }
 
-  .todo-timer {
+.todo-timer {
     display: inline-flex;
   }
 

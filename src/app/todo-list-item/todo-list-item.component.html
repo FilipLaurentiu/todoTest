@@ -1,8 +1,7 @@
 <div class="view">
   <div class="input-container">
     <input class="toggle" type="checkbox" (click)="toggleTodoComplete(todo)" [checked]="todo.complete">
-    <label>{{todo.title}}
-      <span class="time-spent">{{getTimeSpent()}}</span>
+    <label>{{todo.title}} <span *ngIf="!todo.complete" class="time-spent">({{getTimeSpent()}})</span>
     </label>
   </div>
  <div class="btn-container">

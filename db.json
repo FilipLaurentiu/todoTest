@@ -1,9 +1,28 @@
 {
   "todos": [
     {
-      "title": "my first task",
+      "title": "First task",
       "complete": false,
+      "remainingTime": 1765,
       "id": 1
+    },
+    {
+      "title": "Second Task",
+      "complete": false,
+      "remainingTime": 1437,
+      "id": 2
+    },
+    {
+      "title": "Third Task",
+      "complete": false,
+      "remainingTime": 1710,
+      "id": 3
+    },
+    {
+      "title": "Another Task",
+      "complete": true,
+      "remainingTime": 0,
+      "id": 4
     }
   ]
 }
