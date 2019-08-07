@@ -12,7 +12,6 @@ import { Todo } from 'src/app/todo';
 export class TodoTimerComponent implements OnInit {
   private readonly π = Math.PI;
   private α = 0;
-  private drawInterval = 4920;
   public timerRun: boolean = false;
   @Input() public todo: Todo;
   @Output() public updateTodo: EventEmitter<Todo> = new EventEmitter<Todo>();
@@ -20,14 +19,20 @@ export class TodoTimerComponent implements OnInit {
   @ViewChild('border') private border: ElementRef;
 
   ngOnInit() {
+    this.α = this.setPieTimerPosition();
+  }
+
+  private setPieTimerPosition(): number {
     if (this.todo.timeSpent) {
-      this.α = 360 - (360 / (1800 / this.todo.timeSpent)); // svg position if todo model have some time spent
+      return 360 - (360 / (1800 / this.todo.timeSpent));
+    } else {
+      return 0;
     }
   }
 
   private draw(): void {
     this.α++;
-    this.α %= 360;
+    this.α = this.setPieTimerPosition();
     const r = (this.α * this.π / 180);
     const x = Math.sin(r) * 12.5;
     const y = Math.cos(r) * - 12.5;
@@ -44,7 +49,7 @@ export class TodoTimerComponent implements OnInit {
           this.timerRun = false;
         }
       }
-    }, this.drawInterval); // Redraw
+    }, 1000); // Redraw
   };
 
   public onToggleStartBtn(): void {
