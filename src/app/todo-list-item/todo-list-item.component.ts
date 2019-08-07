@@ -34,4 +34,9 @@ export class TodoListItemComponent {
     this.updateTodo.emit(todo);
   }
 
+  getTimeSpent(): string {
+    const minutes = Math.floor(this.todo.timeSpent / 60);
+    const seconds = (this.todo.timeSpent - (minutes * 60)).toString().padStart(2,'0');
+    return `${minutes}:${seconds}`;
+  }
 }

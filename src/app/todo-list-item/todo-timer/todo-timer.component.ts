@@ -12,35 +12,18 @@ import { Todo } from 'src/app/todo';
 export class TodoTimerComponent implements OnInit {
   private α = 0;
   private readonly π = Math.PI;
-  private readonly drawInterval = 82;
+  private drawInterval = 4920;
   public timerRun: boolean = false;
   public counter: Observable<number>;
   @Input() public todo: Todo;
-  @Input() public maxTimerValue: number = 30;
   @Output() public updateTodo: EventEmitter<Todo> = new EventEmitter<Todo>();
   @ViewChild('loader') private loader: ElementRef;
   @ViewChild('border') private border: ElementRef;
 
-  constructor() {
-  }
-
   ngOnInit() {
-    if(this.todo.timeSpent){
-      this.α = this.drawInterval * this.todo.timeSpent;
+    if (this.todo.timeSpent) {
+      this.α = 360 - (360 / (1800 / this.todo.timeSpent)); // svg position if todo model have some time spent
     }
-    this.initCounter();
-  }
-
-  private initCounter(): void {
-    const internalSubscription = interval(1000).subscribe(() => {
-      if (this.timerRun && !this.todo.complete && this.todo.timeSpent < this.maxTimerValue) {
-        this.todo.timeSpent++;
-      }
-      if (this.todo.timeSpent === this.maxTimerValue) {
-        this.todo.complete = true;
-        internalSubscription.unsubscribe();
-      }
-    })
   }
 
   private draw(): void {
@@ -51,14 +34,14 @@ export class TodoTimerComponent implements OnInit {
     const y = Math.cos(r) * - 12.5;
     const mid = (this.α > 180) ? 1 : 0;
     const anim = `M 0 0 v -12.5 A 12.5 12.5 1 ${mid} 1 ${x} ${y} z`;
-
     this.loader.nativeElement.setAttribute('d', anim);
     this.border.nativeElement.setAttribute('d', anim);
     setTimeout(() => {
       if (this.timerRun) {
-        if (this.todo.timeSpent < this.maxTimerValue) {
+        if (this.todo.timeSpent > 0) {
           this.draw();
         } else {
+          this.α = 360;
           this.timerRun = false;
         }
       }
@@ -66,12 +49,24 @@ export class TodoTimerComponent implements OnInit {
   };
 
 
-  onToggleStartBtn(): void {
+  public onToggleStartBtn(): void {
     this.timerRun = !this.timerRun;
-    if (this.timerRun) {
+    if (this.timerRun && !this.todo.complete) {
       this.draw();
+      this.initCounter();
     }
-    this.updateTodo.emit(this.todo);
   }
 
+  private initCounter(): void {
+    const intervalSubscription = interval(1000).subscribe(() => {
+      if (this.timerRun && !this.todo.complete && this.todo.timeSpent > 0) {
+        this.todo.timeSpent--;
+      }
+      if (this.todo.timeSpent === 0) {
+        this.todo.complete = true;
+        intervalSubscription.unsubscribe();
+      }
+      this.updateTodo.emit(this.todo);
+    });
+  }
 }
