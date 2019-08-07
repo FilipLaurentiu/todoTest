@@ -10,8 +10,8 @@ import { Todo } from 'src/app/todo';
   styleUrls: ['./todo-timer.component.scss']
 })
 export class TodoTimerComponent implements OnInit {
-  private α = 0
-  private readonly π = Math.PI
+  private α = 0;
+  private readonly π = Math.PI;
   private readonly drawInterval = 82;
   public timerRun: boolean = false;
   public counter: Observable<number>;

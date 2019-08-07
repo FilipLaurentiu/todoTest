@@ -11,3 +11,11 @@ app-todo-timer {
 .btn-container {
   width: 20%
 }
+
+.time-spent {
+  position: absolute;
+  left: 60px;
+  bottom: 0px;
+  font-size: medium;
+  color: lightgray;
+}

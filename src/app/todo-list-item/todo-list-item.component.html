@@ -1,7 +1,8 @@
 <div class="view">
-  <div class="input-container" >
+  <div class="input-container">
     <input class="toggle" type="checkbox" (click)="toggleTodoComplete(todo)" [checked]="todo.complete">
     <label>{{todo.title}}
+      <span class="time-spent">{{todo.timeSpent}}</span>
     </label>
   </div>
  <div class="btn-container">
