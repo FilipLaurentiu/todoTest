@@ -1,6 +1,6 @@
 import { Component, OnInit, ViewChild, ElementRef, Input, Output, EventEmitter } from '@angular/core';
 
-import { Observable, interval } from 'rxjs';
+import { interval } from 'rxjs';
 
 import { Todo } from 'src/app/todo';
 
@@ -10,11 +10,10 @@ import { Todo } from 'src/app/todo';
   styleUrls: ['./todo-timer.component.scss']
 })
 export class TodoTimerComponent implements OnInit {
-  private α = 0;
   private readonly π = Math.PI;
+  private α = 0;
   private drawInterval = 4920;
   public timerRun: boolean = false;
-  public counter: Observable<number>;
   @Input() public todo: Todo;
   @Output() public updateTodo: EventEmitter<Todo> = new EventEmitter<Todo>();
   @ViewChild('loader') private loader: ElementRef;
@@ -47,7 +46,6 @@ export class TodoTimerComponent implements OnInit {
       }
     }, this.drawInterval); // Redraw
   };
-
 
   public onToggleStartBtn(): void {
     this.timerRun = !this.timerRun;
