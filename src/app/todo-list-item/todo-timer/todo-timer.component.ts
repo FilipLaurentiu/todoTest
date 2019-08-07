@@ -25,11 +25,14 @@ export class TodoTimerComponent implements OnInit {
   }
 
   ngOnInit() {
+    if(this.todo.timeSpent){
+      this.α = this.drawInterval * this.todo.timeSpent;
+    }
     this.initCounter();
   }
 
   private initCounter(): void {
-    const internalSubscription = interval(1000).subscribe(val => {
+    const internalSubscription = interval(1000).subscribe(() => {
       if (this.timerRun && !this.todo.complete && this.todo.timeSpent < this.maxTimerValue) {
         this.todo.timeSpent++;
       }
@@ -43,14 +46,11 @@ export class TodoTimerComponent implements OnInit {
   private draw(): void {
     this.α++;
     this.α %= 360;
-    var r = (this.α * this.π / 180)
-      , x = Math.sin(r) * 12.5
-      , y = Math.cos(r) * - 12.5
-      , mid = (this.α > 180) ? 1 : 0
-      , anim = 'M 0 0 v -12.5 A 12.5 12.5 1 '
-        + mid + ' 1 '
-        + x + ' '
-        + y + ' z';
+    const r = (this.α * this.π / 180);
+    const x = Math.sin(r) * 12.5;
+    const y = Math.cos(r) * - 12.5;
+    const mid = (this.α > 180) ? 1 : 0;
+    const anim = `M 0 0 v -12.5 A 12.5 12.5 1 ${mid} 1 ${x} ${y} z`;
 
     this.loader.nativeElement.setAttribute('d', anim);
     this.border.nativeElement.setAttribute('d', anim);
