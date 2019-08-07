@@ -47,6 +47,14 @@ export class AppComponent implements OnInit {
       );
   }
 
+  onUpdateTodo(todo: Todo) {
+    this.todoDataService
+      .updateTodo(todo)
+      .subscribe((updatedTodo: Todo) => {
+        todo = updatedTodo;
+      })
+  }
+
   onRemoveTodo(todo) {
     this.todoDataService
       .deleteTodoById(todo.id)

@@ -1,6 +1,5 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Todo } from '../todo';
-import { ThrowStmt } from '@angular/compiler';
 
 @Component({
   selector: 'app-todo-list-item',
@@ -17,16 +16,10 @@ export class TodoListItemComponent {
   @Output()
   toggleComplete: EventEmitter<Todo> = new EventEmitter();
 
-  @Output() togglePlayBtn: EventEmitter<boolean> = new EventEmitter<boolean>();
+  @Output()
+  updateTodo: EventEmitter<Todo> = new EventEmitter<Todo>();
 
-  stopedTimer: boolean;
   constructor() {
-    this.stopedTimer = true;
-  }
-
-  public onTogglePlayBtn() {
-    this.stopedTimer = !this.stopedTimer;
-    this.togglePlayBtn.emit(this.stopedTimer);
   }
 
   toggleTodoComplete(todo: Todo) {
@@ -35,6 +28,10 @@ export class TodoListItemComponent {
 
   removeTodo(todo: Todo) {
     this.remove.emit(todo);
+  }
+
+  onUpdateTodo(todo: Todo) {
+    this.updateTodo.emit(todo);
   }
 
 }

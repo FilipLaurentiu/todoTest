@@ -1,6 +1,11 @@
-<div class="svg-container">
-  <svg width="25" height="25" viewbox="0 0 25 25">
-    <path #border class="border" transform="translate(12.5, 12.5)"/>
-    <path #loader class="loader" transform="translate(12.5, 12.5) scale(.84)"/>
-  </svg>
+<div class="todo-timer">
+    <button *ngIf="!todo.complete" class='button' [ngClass]="{ 'paused' : timerRun}" (click)="onToggleStartBtn()"></button>
+
+    <div class="svg-container">
+      <svg width="25" height="25" viewbox="0 0 25 25">
+        <path #border class="border" transform="translate(12.5, 12.5)" />
+        <path #loader class="loader" transform="translate(12.5, 12.5) scale(.84)" />
+      </svg>
+    </div>
+    <span *ngIf="!todo.complete">{{todo.timeSpent}}</span>
 </div>

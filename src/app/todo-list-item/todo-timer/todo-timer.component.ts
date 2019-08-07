@@ -1,4 +1,8 @@
-import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input, Output, EventEmitter } from '@angular/core';
+
+import { Observable, interval } from 'rxjs';
+
+import { Todo } from 'src/app/todo';
 
 @Component({
   selector: 'app-todo-timer',
@@ -7,16 +11,36 @@ import { Component, OnInit, ViewChild, ElementRef, Input } from '@angular/core';
 })
 export class TodoTimerComponent implements OnInit {
   private α = 0
-  private π = Math.PI
-  @Input() public timer = 30;
+  private readonly π = Math.PI
+  private readonly drawInterval = 82;
+  public timerRun: boolean = false;
+  public counter: Observable<number>;
+  @Input() public todo: Todo;
+  @Input() public maxTimerValue: number = 30;
+  @Output() public updateTodo: EventEmitter<Todo> = new EventEmitter<Todo>();
   @ViewChild('loader') private loader: ElementRef;
   @ViewChild('border') private border: ElementRef;
 
-  ngOnInit() {
-    this.draw();
+  constructor() {
   }
 
-  private draw() {
+  ngOnInit() {
+    this.initCounter();
+  }
+
+  private initCounter(): void {
+    const internalSubscription = interval(1000).subscribe(val => {
+      if (this.timerRun && !this.todo.complete && this.todo.timeSpent < this.maxTimerValue) {
+        this.todo.timeSpent++;
+      }
+      if (this.todo.timeSpent === this.maxTimerValue) {
+        this.todo.complete = true;
+        internalSubscription.unsubscribe();
+      }
+    })
+  }
+
+  private draw(): void {
     this.α++;
     this.α %= 360;
     var r = (this.α * this.π / 180)
@@ -30,6 +54,24 @@ export class TodoTimerComponent implements OnInit {
 
     this.loader.nativeElement.setAttribute('d', anim);
     this.border.nativeElement.setAttribute('d', anim);
-    setTimeout(() => this.draw(), this.timer); // Redraw
+    setTimeout(() => {
+      if (this.timerRun) {
+        if (this.todo.timeSpent < this.maxTimerValue) {
+          this.draw();
+        } else {
+          this.timerRun = false;
+        }
+      }
+    }, this.drawInterval); // Redraw
   };
+
+
+  onToggleStartBtn(): void {
+    this.timerRun = !this.timerRun;
+    if (this.timerRun) {
+      this.draw();
+    }
+    this.updateTodo.emit(this.todo);
+  }
+
 }
